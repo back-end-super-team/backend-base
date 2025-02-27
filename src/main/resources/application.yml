@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: backend-base
+  cache:
+    cache-names: rate-limit-buckets
+    caffeine:
+      spec: maximumSize=10000,expireAfterAccess=1h
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    open-in-view: false
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  health:
+    redis:
+      enabled: ${REDIS_ENABLE:false}
+
+encrypt:
+  secretKey: ${ENCRYPT_SECRET_KEY:TheSecretKeyLengthMustBe32Byte..}
