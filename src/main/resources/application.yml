@@ -15,6 +15,19 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
 management:
   health:
     redis:

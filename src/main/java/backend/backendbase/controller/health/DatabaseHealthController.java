@@ -3,6 +3,7 @@ package backend.backendbase.controller.health;
 import backend.backendbase.annotation.RateLimited;
 import backend.backendbase.data.api.ApiResponse;
 import backend.backendbase.enums.RateLimitType;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
@@ -17,6 +18,7 @@ public class DatabaseHealthController {
 
     private EntityManager entityManager;
 
+    @Hidden
     @RateLimited(type = RateLimitType.API, capacity = 1, duration = 10)
     @GetMapping(value = {"/v1/db"})
     public ApiResponse healthCheckDB() {
