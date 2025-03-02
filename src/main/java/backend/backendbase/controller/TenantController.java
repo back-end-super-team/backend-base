@@ -4,12 +4,12 @@ import backend.backendbase.data.api.ApiResponse;
 import backend.backendbase.data.api.tenant.CreateTenantRequest;
 import backend.backendbase.enums.TenantStatus;
 import backend.backendbase.service.TenantService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tenant")
+@Tag(name = "Tenant APIs", description = "Endpoints for managing tenants")
 public class TenantController extends BaseController {
 
     private final TenantService tenantService;

@@ -5,6 +5,7 @@ import backend.backendbase.config.cache.RedisCacheConfig;
 import backend.backendbase.controller.BaseController;
 import backend.backendbase.data.api.ApiResponse;
 import backend.backendbase.enums.RateLimitType;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +21,7 @@ public class RedisHealthController extends BaseController {
 
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Hidden
     @RateLimited(type = RateLimitType.API, capacity = 1, duration = 10)
     @GetMapping(value = {"/v1/redis"})
     public ApiResponse healthCheckRedis() {

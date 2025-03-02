@@ -1,6 +1,7 @@
 package backend.backendbase.controller.health;
 
 import backend.backendbase.data.api.ApiResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.SneakyThrows;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = {"/health"})
 public class CacheCheckController {
 
+    @Hidden
     @SneakyThrows
     @Cacheable(value = "in-memory")
     @GetMapping(value = "/cache")
@@ -21,6 +23,7 @@ public class CacheCheckController {
         return ApiResponse.ok();
     }
 
+    @Hidden
     @CacheEvict(value = "in-memory")
     @DeleteMapping(value = "/cache")
     public ApiResponse Get() {
