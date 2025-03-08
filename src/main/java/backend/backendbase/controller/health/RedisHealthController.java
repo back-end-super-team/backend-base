@@ -1,9 +1,9 @@
 package backend.backendbase.controller.health;
 
 import backend.backendbase.annotation.RateLimited;
+import backend.backendbase.common.result.Result;
 import backend.backendbase.config.cache.RedisCacheConfig;
 import backend.backendbase.controller.BaseController;
-import backend.backendbase.data.api.ApiResponse;
 import backend.backendbase.enums.RateLimitType;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -22,9 +22,9 @@ public class RedisHealthController extends BaseController {
 
     @RateLimited(type = RateLimitType.API, capacity = 1, duration = 10)
     @GetMapping(value = {"/v1/redis"})
-    public ApiResponse healthCheckRedis() {
+    public Result<Void> healthCheckRedis() {
         redisTemplate.opsForValue().get("");
-        return ApiResponse.ok();
+        return Result.success();
     }
 
 

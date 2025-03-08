@@ -1,6 +1,6 @@
 package backend.backendbase.controller;
 
-import backend.backendbase.data.api.ApiResponse;
+import backend.backendbase.common.result.Result;
 import backend.backendbase.data.api.login.LoginRequest;
 import backend.backendbase.data.api.login.LoginResponse;
 import backend.backendbase.service.AuthenticationService;
@@ -18,9 +18,9 @@ public class AuthenticationController extends BaseController {
 
     @SneakyThrows
     @PostMapping("/v1/login")
-    public ApiResponse authenticate(@RequestBody @Valid LoginRequest loginRequest) {
+    public Result<LoginResponse> authenticate(@RequestBody @Valid LoginRequest loginRequest) {
         String jwtToken = authenticationService.loginAndGenerateToken(loginRequest);
-        return ApiResponse.ok(new LoginResponse(jwtToken));
+        return Result.success(new LoginResponse(jwtToken));
     }
 
 }

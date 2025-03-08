@@ -1,6 +1,6 @@
 package backend.backendbase.controller.health;
 
-import backend.backendbase.data.api.ApiResponse;
+import backend.backendbase.common.result.Result;
 import lombok.SneakyThrows;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,15 +16,15 @@ public class CacheCheckController {
     @SneakyThrows
     @Cacheable(value = "in-memory")
     @GetMapping(value = "/cache")
-    public ApiResponse cacheGet() {
+    public Result<Void> cacheGet() {
         Thread.sleep(3000);
-        return ApiResponse.ok();
+        return Result.success();
     }
 
     @CacheEvict(value = "in-memory")
     @DeleteMapping(value = "/cache")
-    public ApiResponse Get() {
-        return ApiResponse.ok();
+    public Result<Void> Get() {
+        return Result.success();
     }
 
 }

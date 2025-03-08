@@ -1,6 +1,6 @@
 package backend.backendbase.controller.health;
 
-import backend.backendbase.data.api.ApiResponse;
+import backend.backendbase.common.result.Result;
 import backend.backendbase.enums.KafkaTopic;
 import backend.backendbase.service.KafkaService;
 import lombok.AllArgsConstructor;
@@ -16,9 +16,9 @@ public class KafkaHealthController {
     private KafkaService kafkaService;
 
     @GetMapping(value = {"/v1/kafka"})
-    public ApiResponse healthCheckKafka() {
+    public Result<?> healthCheckKafka() {
         kafkaService.send(KafkaTopic.HEALTH_CHECK, "");
-        return ApiResponse.ok();
+        return Result.success();
     }
 
 }

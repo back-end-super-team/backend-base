@@ -1,7 +1,7 @@
 package backend.backendbase.controller.health;
 
 import backend.backendbase.annotation.RateLimited;
-import backend.backendbase.data.api.ApiResponse;
+import backend.backendbase.common.result.Result;
 import backend.backendbase.enums.RateLimitType;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,7 @@ public class DatabaseHealthController {
 
     @RateLimited(type = RateLimitType.API, capacity = 1, duration = 10)
     @GetMapping(value = {"/v1/db"})
-    public ApiResponse healthCheckDB() {
-        return ApiResponse.ok(entityManager.unwrap(Session.class).isConnected());
+    public Result<Void> healthCheckDB() {
+        return Result.judge(entityManager.unwrap(Session.class).isConnected());
     }
-
 }
