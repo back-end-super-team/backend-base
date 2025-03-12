@@ -1,0 +1,21 @@
+{
+    "name": "Java & Spring Boot Application",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "settings": { 
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "vscjava.vscode-java-pack",
+        "pivotal.vscode-boot-dev-pack",
+        "vscjava.vscode-spring-boot-dashboard",
+        "vscjava.vscode-spring-initializr"
+    ],
+    "forwardPorts": [
+        8080
+    ],
+    "postCreateCommand": "mvn install",
+    "remoteUser": "vscode"
+}
