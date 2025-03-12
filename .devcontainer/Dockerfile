@@ -1,6 +1,6 @@
 # Use the official maven/Java image to create a build artifact.
 # https://hub.docker.com/_/maven
-FROM maven:3.8.4-openjdk-21-slim as builder
+FROM maven:3.8.4-openjdk-11-slim as builder
 
 # Copy local code to the container image.
 WORKDIR /app
@@ -10,7 +10,7 @@ COPY . .
 RUN mvn package -DskipTests
 
 # Use OpenJDK for runtime
-FROM openjdk:21-jre-slim
+FROM openjdk:11-jre-slim
 WORKDIR /app
 COPY --from=builder /app/target/codebase-0.0.1-SNAPSHOT.jar /app/codebase.jar
 
