@@ -22,7 +22,7 @@ public class DatabaseHealthController {
     @RateLimited(type = RateLimitType.API, capacity = 1, duration = 10)
     @GetMapping(value = {"/v1/db"})
     public ApiResponse healthCheckDB() {
-        return ApiResponse.ok(entityManager.unwrap(Session.class).isConnected());
+        return ApiResponse.success(entityManager.unwrap(Session.class).isConnected());
     }
 
 }

@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.4.2"
+	id("org.springframework.boot") version "3.4.3"
 }
 
 apply(plugin = "io.spring.dependency-management")
@@ -38,7 +38,7 @@ dependencies {
 	implementation("com.bucket4j:bucket4j-redis:8.10.1")
 
 	// Cache
-	implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+	implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
 	implementation("org.redisson:redisson-spring-boot-starter:3.31.0")
 
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
@@ -48,11 +48,13 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 
 	compileOnly("org.projectlombok:lombok:1.18.36")
+
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	runtimeOnly("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.rest-assured:rest-assured:5.5.1")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 

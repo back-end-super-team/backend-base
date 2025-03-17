@@ -20,7 +20,7 @@ public class KafkaHealthController {
     @GetMapping(value = {"/v1/kafka"})
     public ApiResponse healthCheckKafka() {
         kafkaService.send(KafkaTopic.HEALTH_CHECK, "");
-        return ApiResponse.ok();
+        return ApiResponse.success();
     }
 
 }

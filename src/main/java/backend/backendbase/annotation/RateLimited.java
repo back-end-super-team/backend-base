@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface RateLimited {
     RateLimitType type();           // Type of limit
-    int capacity();                // Number of tokens
-    long duration();              // Duration in seconds
+    int capacity();                 // Number of tokens
+    long duration();                // Duration in seconds
 }

@@ -1,7 +1,7 @@
 package backend.backendbase.controller.health;
 
 import backend.backendbase.annotation.RateLimited;
-import backend.backendbase.config.cache.RedisCacheConfig;
+import backend.backendbase.config.cache.DistributedCacheConfig;
 import backend.backendbase.controller.BaseController;
 import backend.backendbase.data.api.ApiResponse;
 import backend.backendbase.enums.RateLimitType;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@ConditionalOnBean(RedisCacheConfig.class)
+@ConditionalOnBean(DistributedCacheConfig.class)
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = {"/health"})
@@ -26,9 +26,7 @@ public class RedisHealthController extends BaseController {
     @GetMapping(value = {"/v1/redis"})
     public ApiResponse healthCheckRedis() {
         redisTemplate.opsForValue().get("");
-        return ApiResponse.ok();
+        return ApiResponse.success();
     }
-
-
 
 }

@@ -1,13 +1,13 @@
 spring:
   application:
     name: backend-base
-  cache:
-    cache-names: rate-limit-buckets
-    caffeine:
-      spec: maximumSize=10000,expireAfterAccess=1h
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
   jpa:
@@ -15,17 +15,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+config:
+  master-ulid: 00000000000000000000000000
+  encrypt:
+    secretKey: ${ENCRYPT_SECRET_KEY:TheSecretKeyLengthMustBe32Byte..}
+
 springdoc:
   api-docs:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
     operations-sorter: method
-
-management:
-  health:
-    redis:
-      enabled: ${REDIS_ENABLE:false}
-
-encrypt:
-  secretKey: ${ENCRYPT_SECRET_KEY:TheSecretKeyLengthMustBe32Byte..}

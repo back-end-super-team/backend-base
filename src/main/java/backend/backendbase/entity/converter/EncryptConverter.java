@@ -1,4 +1,4 @@
-package backend.backendbase.config.jpa;
+package backend.backendbase.entity.converter;
 
 import backend.backendbase.utility.PasswordEncryption;
 import jakarta.persistence.AttributeConverter;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Converter
 public class EncryptConverter implements AttributeConverter<String, String> {
 
-    @Value("${encrypt.secretKey}")
+    @Value("${config.encrypt.secretKey}")
     private String secretKey;
 
     @Override
