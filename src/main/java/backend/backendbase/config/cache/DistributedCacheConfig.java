@@ -4,29 +4,18 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.command.CommandAsyncExecutor;
 import org.redisson.config.Config;
-import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.lang.reflect.Field;
 
 @EnableCaching
-@ConditionalOnExpression("${management.health.redis.enabled}")
 @Configuration
-public class RedisCacheConfig {
-
-    @Value("${spring.redis.host:localhost}")
-    private String redisHost;
-
-    @Value("${spring.redis.port:6379}")
-    private int redisPort;
+public class DistributedCacheConfig {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
@@ -37,12 +26,16 @@ public class RedisCacheConfig {
     }
 
     @Bean
-    public RedissonClient redissonClient() {
+    public RedissonClient redissonClient(
+            @Value("${spring.data.redis.host:localhost}") String redisHost,
+            @Value("${spring.data.redis.port:6379}") int redisPort
+    ) {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress("redis://" + redisHost + ":" + redisPort)
                 .setConnectionMinimumIdleSize(10)
-                .setConnectionPoolSize(64);
+                .setConnectionPoolSize(64)
+        ;
         return Redisson.create(config);
     }
 
@@ -54,10 +47,9 @@ public class RedisCacheConfig {
         return (CommandAsyncExecutor) field.get(redissonClient);
     }
 
-    @Primary
-    @Bean
-    public CacheManager cacheManager(RedissonClient redissonClient) {
-        return new RedissonSpringCacheManager(redissonClient);
-    }
+//    @Bean
+//    public CacheManager distributedCacheManager(RedissonClient redissonClient) {
+//        return new RedissonSpringCacheManager(redissonClient);
+//    }
 
 }

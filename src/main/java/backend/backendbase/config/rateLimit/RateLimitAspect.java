@@ -1,6 +1,7 @@
 package backend.backendbase.config.rateLimit;
 
 import backend.backendbase.annotation.RateLimited;
+import backend.backendbase.config.tenant.TenantContextHolder;
 import backend.backendbase.enums.RateLimitType;
 import backend.backendbase.exception.RateLimitExceededException;
 import backend.backendbase.service.RateLimiterService;
@@ -22,28 +23,30 @@ public class RateLimitAspect {
 
     @Around("@annotation(rateLimited)")
     public Object rateLimit(ProceedingJoinPoint joinPoint, RateLimited rateLimited) throws Throwable {
-        String key = generateKey(rateLimited.type());
+        String key = getKeyFromType(rateLimited.type());
         boolean allowed = rateLimiterService.tryConsume(
                 key,
                 rateLimited.capacity(),
                 rateLimited.duration()
         );
         if (!allowed) {
-            throw new RateLimitExceededException("Rate limit exceeded for " + rateLimited.type());
+            throw new RateLimitExceededException(String.format("Rate limit exceeded, type=%s, oky=%s", rateLimited.type(), key));
         }
         return joinPoint.proceed();
     }
 
-    private String generateKey(RateLimitType type) {
+    private String getKeyFromType(RateLimitType type) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         return switch (type) {
             case API -> request.getRequestURI();
             case USER -> {
-                String userId = request.getHeader("X-User-Id"); // Assume user ID from header
-                yield userId != null ? userId : "anonymous";
+                if (TenantContextHolder.getTokenData() == null || TenantContextHolder.getTokenData().getId() == null) {
+                    yield "anonymous";
+                } else {
+                    yield TenantContextHolder.getTokenData().getId();
+                }
             }
             case IP -> request.getRemoteAddr();
-            case FUNCTION -> "service:" + request.getRequestURI();
         };
     }
 

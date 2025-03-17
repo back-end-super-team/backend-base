@@ -1,6 +1,6 @@
 package backend.backendbase.config.security;
 
-import backend.backendbase.config.tenant.TenantContext;
+import backend.backendbase.config.tenant.TenantContextHolder;
 import backend.backendbase.config.tenant.TenantManager;
 import backend.backendbase.data.UserData;
 import backend.backendbase.data.api.tenant.TokenData;
@@ -15,8 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -46,12 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtService.isTokenValid(jwt)) {
                     Claims claims = jwtService.extractAllClaims(jwt);
                     TokenData tokenData = objectMapper.convertValue(new HashMap<>(claims), UserData.class);
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            tokenData.getUsername(), null, null
-                    );
-                    authToken.setDetails(tokenData);
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                    TenantContext.setTokenData(tokenData);
+                    TenantContextHolder.setTokenData(tokenData);
                     tenantManager.setCurrentTenant(tokenData.getTenantId());
                 }
             }

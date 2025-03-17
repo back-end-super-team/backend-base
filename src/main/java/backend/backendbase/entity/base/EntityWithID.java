@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public class EntityWithULID extends EntityWithAware {
+public class EntityWithID extends EntityWithAware {
 
     @Id
     @ULID

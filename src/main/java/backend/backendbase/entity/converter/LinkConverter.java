@@ -1,4 +1,4 @@
-package backend.backendbase.config.jpa;
+package backend.backendbase.entity.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
