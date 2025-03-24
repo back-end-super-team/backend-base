@@ -19,3 +19,45 @@ config:
   master-ulid: 00000000000000000000000000
   encrypt:
     secretKey: ${ENCRYPT_SECRET_KEY:TheSecretKeyLengthMustBe32Byte..}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-type: time_based
+        minimum-number-of-calls: 50
+    instances:
+      r4j_healthcheck_db:
+        base-config: default
+  bulkhead:
+    instances:
+      r4j_healthcheck_db:
+        base-config: default
+    configs:
+      default:
+        max-concurrent-calls: 3
+        max-wait-duration: 1s
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 2s
+        cancel-running-future: true
+    instances:
+      r4j_healthcheck_db:
+        base-config: default
