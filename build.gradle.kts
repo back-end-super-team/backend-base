@@ -1,5 +1,6 @@
 plugins {
 	java
+	`maven-publish`
 	id("org.springframework.boot") version "3.4.3"
 }
 
@@ -12,7 +13,7 @@ java {
 }
 
 group = "backend"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 repositories {
 	mavenCentral()
@@ -34,11 +35,9 @@ dependencies {
 
 	// Rate limiter
 	implementation("com.bucket4j:bucket4j-core:8.10.1")
-	implementation("com.bucket4j:bucket4j-caffeine:8.10.1")
 	implementation("com.bucket4j:bucket4j-redis:8.10.1")
 
 	// Cache
-	implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
 	implementation("org.redisson:redisson-spring-boot-starter:3.31.0")
 
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
@@ -62,19 +61,66 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
-
 tasks.jar {
 	enabled = false
 	manifest {
 		attributes(
-			"Main-Class" to "project.backend/backendbase/BackendBaseApplication"
+			"Main-Class" to "project.backend/base/BackendBaseApplication"
 		)
 	}
 }
 
 tasks.withType(JavaCompile::class) {
 	options.encoding = "UTF-8"
+}
+
+tasks.register<Test>("blackboxTest") {
+	description = "Runs blackbox tests."
+	group = "verification"
+
+	useJUnitPlatform()
+
+	filter {
+		includeTestsMatching("backend.base.blackbox.**")
+	}
+}
+
+tasks.register<Test>("componentTest") {
+	description = "Runs component tests."
+	group = "verification"
+
+	useJUnitPlatform()
+
+	filter {
+		includeTestsMatching("backend.base.component.**")
+	}
+}
+
+tasks.register<Test>("unitTest") {
+	description = "Runs unit tests."
+	group = "verification"
+
+	useJUnitPlatform()
+
+	filter {
+		includeTestsMatching("backend.base.unit.**")
+	}
+}
+
+publishing {
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/back-end-super-team/backend-base")
+			credentials {
+				username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+				password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+			}
+		}
+	}
+	publications {
+		register<MavenPublication>("gpr") {
+			from(components["java"])
+		}
+	}
 }
