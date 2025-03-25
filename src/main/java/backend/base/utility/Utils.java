@@ -1,10 +1,10 @@
 package backend.base.utility;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Utils {
 
-    private static final Random random = new Random();
+    private static final SecureRandom random = new SecureRandom ();
 
     public static String generateRandomPassword(int len) {
         String pattern = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?<>,.";
