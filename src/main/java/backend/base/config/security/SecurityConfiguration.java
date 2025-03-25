@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
@@ -29,13 +28,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("*"));
-                    configuration.setAllowedHeaders(List.of("*"));
-                    configuration.setAllowedMethods(List.of("*"));
-                    return configuration;
-                }))
+//                .cors(cors -> cors.configurationSource(request -> {
+//                    CorsConfiguration configuration = new CorsConfiguration();
+//                    configuration.setAllowedOrigins(List.of("*"));
+//                    configuration.setAllowedHeaders(List.of("*"));
+//                    configuration.setAllowedMethods(List.of("*"));
+//                    return configuration;
+//                }))
                 .authorizeHttpRequests(
                         authorize -> {
                             if (requestMatchers != null) {
