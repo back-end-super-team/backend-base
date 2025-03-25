@@ -1,9 +1,11 @@
 package backend.base.entity.converter;
 
-import backend.base.utility.PasswordEncryption;
+import backend.base.utility.EncryptionUtils;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.nio.charset.StandardCharsets;
 
 @Converter
 public class EncryptConverter implements AttributeConverter<String, String> {
@@ -14,7 +16,7 @@ public class EncryptConverter implements AttributeConverter<String, String> {
     @Override
     public String convertToDatabaseColumn(String s) {
         try {
-            return PasswordEncryption.encrypt(s, secretKey);
+            return EncryptionUtils.encrypt(s, secretKey.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -24,7 +26,7 @@ public class EncryptConverter implements AttributeConverter<String, String> {
     public String convertToEntityAttribute(String s) {
         if (s!= null && !s.isEmpty()) {
             try {
-                return PasswordEncryption.decrypt(s, secretKey);
+                return EncryptionUtils.decrypt(s, secretKey.getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

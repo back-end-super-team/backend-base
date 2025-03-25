@@ -4,9 +4,10 @@ import java.util.Random;
 
 public class Utils {
 
+    private static final Random random = new Random();
+
     public static String generateRandomPassword(int len) {
         String pattern = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?<>,.";
-        Random random = new Random();
 
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
