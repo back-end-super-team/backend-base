@@ -10,11 +10,11 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PasswordEncryptionTest {
+public class EncryptionUtilsTest {
 
     private final static String KEY = "TheSecretKeyLengthMustBe32Byte..";
     private final static String plainText = "foobar";
-    private final static String encryptedText = "z4gTD7Wb7h+YK19vRJRlb+75EWXTi+150V5Hj9lnsG0=";
+    private final static String encryptedText = "FJE9XDOgDQxHtKT72NgZmRaykDlvU6VCMnYv52BBLpQO1g==";
 
     @Test
     public void encrypt() throws Exception {
