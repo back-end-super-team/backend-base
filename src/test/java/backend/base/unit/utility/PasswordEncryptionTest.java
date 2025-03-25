@@ -1,32 +1,33 @@
 package backend.base.unit.utility;
 
-import backend.base.utility.PasswordEncryption;
+import backend.base.utility.EncryptionUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PasswordEncryptionTest {
 
     private final static String KEY = "TheSecretKeyLengthMustBe32Byte..";
+    private final static String plainText = "foobar";
+    private final static String encryptedText = "z4gTD7Wb7h+YK19vRJRlb+75EWXTi+150V5Hj9lnsG0=";
 
     @Test
     public void encrypt() throws Exception {
-        String password = "foobar";
-        String encryptedPassword = PasswordEncryption.encrypt(password, KEY);
-        assertNotEquals(password, encryptedPassword);
-        assertFalse(encryptedPassword.contains(password));
+        String result = EncryptionUtils.encrypt(plainText, KEY.getBytes(StandardCharsets.UTF_8));
+        assertNotEquals(plainText, result);
+        assertFalse(result.contains(plainText));
     }
 
     @Test
     public void decrypt() throws Exception {
-        String encryptedPassword = "El7EW2eY6WiJbGb8hHn4rB";
-        String decryptedPassword = PasswordEncryption.decrypt(encryptedPassword, KEY);
-        assertNotEquals(encryptedPassword, decryptedPassword);
-        assertFalse(encryptedPassword.contains(decryptedPassword));
+        String result = EncryptionUtils.decrypt(encryptedText, KEY.getBytes(StandardCharsets.UTF_8));
+        assertNotEquals(encryptedText, result);
+        assertEquals(plainText, result);
     }
 
 }
