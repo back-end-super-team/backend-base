@@ -1,4 +1,4 @@
-package backend.backendbase.config;
+package backend.base.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -27,8 +27,8 @@ public class OpenAPIConfig {
 
 }
 
-/* DOCS for Swagger */
-/*
+/* DOCS for Swagger
+*
 * Swagger often used Annotations
 * @Tag -> rename - description for a controller
 * @Operation -> summary and description for a specific API
