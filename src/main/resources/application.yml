@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: backend-base
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    open-in-view: false
+  main:
+    allow-bean-definition-overriding: true
+
+config:
+  master-ulid: 00000000000000000000000000
+  encrypt:
+    secretKey: ${ENCRYPT_SECRET_KEY:TheSecretKeyLengthMustBe32Byte..}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-type: time_based
+        minimum-number-of-calls: 50
+    instances:
+      r4j_healthcheck_db:
+        base-config: default
+  bulkhead:
+    instances:
+      r4j_healthcheck_db:
+        base-config: default
+    configs:
+      default:
+        max-concurrent-calls: 3
+        max-wait-duration: 1s
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 2s
+        cancel-running-future: true
+    instances:
+      r4j_healthcheck_db:
+        base-config: default
