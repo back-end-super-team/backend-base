@@ -8,7 +8,7 @@ apply(plugin = "io.spring.dependency-management")
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(23)
 	}
 }
 
